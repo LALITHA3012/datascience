@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}AI-Driven Agriculture Yield Prediction & Market Insights{% endblock %}
+
+{% block content %}
+<div class="hero-section">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+        <h1 class="hero-title">AI-Driven Agriculture Yield Prediction & Market Insights</h1>
+        <h2 class="hero-subtitle">Presented by Lalitha S V</h2>
+        <p class="hero-description">Empowering farmers with intelligent predictions and market insights</p>
+        
+        <div class="hero-buttons">
+            <a href="{{ url_for('problems') }}" class="btn btn-primary">
+                <i class="fas fa-exclamation-triangle"></i>
+                Problem Identification
+            </a>
+            <a href="{{ url_for('prediction') }}" class="btn btn-secondary">
+                <i class="fas fa-chart-line"></i>
+                Yield Prediction
+            </a>
+            <a href="{{ url_for('market') }}" class="btn btn-accent">
+                <i class="fas fa-market"></i>
+                Market Insights
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="features-section">
+    <div class="container">
+        <h2>Why Choose AgriAI?</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <i class="fas fa-brain"></i>
+                <h3>AI-Powered</h3>
+                <p>Advanced machine learning algorithms for accurate predictions</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-chart-bar"></i>
+                <h3>Real-time Data</h3>
+                <p>Live market insights and weather-based predictions</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-mobile-alt"></i>
+                <h3>Mobile Friendly</h3>
+                <p>Access insights anywhere, anytime on any device</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
