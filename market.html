@@ -1,0 +1,162 @@
+{% extends "base.html" %}
+
+{% block title %}Market Insights - AgriAI{% endblock %}
+
+{% block extra_css %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="container">
+        <h1>Market Insights</h1>
+        <p>Real-time market data and intelligent recommendations</p>
+    </div>
+</div>
+
+<div class="market-section">
+    <div class="container">
+        <div class="market-grid">
+            <div class="chart-card">
+                <h2>Current Market Prices</h2>
+                <canvas id="priceChart" width="400" height="200"></canvas>
+            </div>
+
+            <div class="insights-card">
+                <h2>Data-Driven Insights</h2>
+                <div class="insights-grid">
+                    <div class="insight-item">
+                        <div class="insight-icon">
+                            <i class="fas fa-seedling"></i>
+                        </div>
+                        <div class="insight-content">
+                            <h3>Best Crop to Grow</h3>
+                            <p class="insight-value">Soybean</p>
+                            <p class="insight-desc">Highest profit potential this season</p>
+                        </div>
+                    </div>
+
+                    <div class="insight-item">
+                        <div class="insight-icon">
+                            <i class="fas fa-dollar-sign"></i>
+                        </div>
+                        <div class="insight-content">
+                            <h3>Expected Profit Margin</h3>
+                            <p class="insight-value">32%</p>
+                            <p class="insight-desc">Above average returns expected</p>
+                        </div>
+                    </div>
+
+                    <div class="insight-item">
+                        <div class="insight-icon trend-up">
+                            <i class="fas fa-arrow-trend-up"></i>
+                        </div>
+                        <div class="insight-content">
+                            <h3>Market Trend</h3>
+                            <p class="insight-value trend-up">Bullish</p>
+                            <p class="insight-desc">Prices trending upward</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="market-trends-card">
+            <h2>Price Trends (Last 6 Months)</h2>
+            <canvas id="trendChart" width="800" height="300"></canvas>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Current Market Prices Chart
+const priceCtx = document.getElementById('priceChart').getContext('2d');
+new Chart(priceCtx, {
+    type: 'bar',
+    data: {
+        labels: ['Wheat', 'Rice', 'Corn', 'Soybean', 'Cotton'],
+        datasets: [{
+            label: 'Price ($/ton)',
+            data: [280, 420, 190, 380, 1200],
+            backgroundColor: [
+                '#4CAF50',
+                '#FFD700',
+                '#FF9800',
+                '#2196F3',
+                '#9C27B0'
+            ],
+            borderRadius: 8,
+            borderSkipped: false,
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                display: false
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                title: {
+                    display: true,
+                    text: 'Price ($/ton)'
+                }
+            }
+        }
+    }
+});
+
+// Price Trends Chart
+const trendCtx = document.getElementById('trendChart').getContext('2d');
+new Chart(trendCtx, {
+    type: 'line',
+    data: {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+        datasets: [
+            {
+                label: 'Wheat',
+                data: [250, 260, 270, 275, 280, 280],
+                borderColor: '#4CAF50',
+                backgroundColor: 'rgba(76, 175, 80, 0.1)',
+                tension: 0.4
+            },
+            {
+                label: 'Rice',
+                data: [400, 410, 415, 420, 425, 420],
+                borderColor: '#FFD700',
+                backgroundColor: 'rgba(255, 215, 0, 0.1)',
+                tension: 0.4
+            },
+            {
+                label: 'Soybean',
+                data: [350, 360, 370, 375, 380, 380],
+                borderColor: '#2196F3',
+                backgroundColor: 'rgba(33, 150, 243, 0.1)',
+                tension: 0.4
+            }
+        ]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'top'
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: false,
+                title: {
+                    display: true,
+                    text: 'Price ($/ton)'
+                }
+            }
+        }
+    }
+});
+</script>
+{% endblock %}
