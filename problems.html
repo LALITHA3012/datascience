@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}Problem Identification - AgriAI{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="container">
+        <h1>Problem Identification</h1>
+        <p>Understanding the challenges in modern agriculture</p>
+    </div>
+</div>
+
+<div class="problems-section">
+    <div class="container">
+        <div class="problems-grid">
+            <div class="problem-card">
+                <div class="problem-icon">
+                    <i class="fas fa-cloud-rain"></i>
+                </div>
+                <div class="problem-content">
+                    <h3>Climate Variability</h3>
+                    <p>Unpredictable crop yields due to climate variability and soil degradation affecting agricultural productivity worldwide.</p>
+                </div>
+            </div>
+
+            <div class="problem-card">
+                <div class="problem-icon">
+                    <i class="fas fa-eye-slash"></i>
+                </div>
+                <div class="problem-content">
+                    <h3>Limited Real-time Insights</h3>
+                    <p>Lack of real-time insights for farmers and suppliers leading to poor decision-making and resource allocation.</p>
+                </div>
+            </div>
+
+            <div class="problem-card">
+                <div class="problem-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="problem-content">
+                    <h3>Market Price Fluctuations</h3>
+                    <p>Market price fluctuations leading to financial uncertainty and inability to plan crop production effectively.</p>
+                </div>
+            </div>
+
+            <div class="problem-card">
+                <div class="problem-icon">
+                    <i class="fas fa-database"></i>
+                </div>
+                <div class="problem-content">
+                    <h3>Data Access Limitations</h3>
+                    <p>Limited access to centralized data for decision-making, preventing farmers from making informed choices.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="solution-cta">
+            <h2>Our Solution</h2>
+            <p>AgriAI addresses these challenges through intelligent prediction models and comprehensive market analysis.</p>
+            <a href="{{ url_for('prediction') }}" class="btn btn-primary">Start Predicting</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
