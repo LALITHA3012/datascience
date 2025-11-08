@@ -1,0 +1,172 @@
+{% extends "base.html" %}
+
+{% block title %}Yield Prediction - AgriAI{% endblock %}
+
+{% block extra_css %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="container">
+        <h1>Crop Yield Prediction</h1>
+        <p>Get AI-powered predictions for your crop yields</p>
+    </div>
+</div>
+
+<div class="prediction-section">
+    <div class="container">
+        <div class="prediction-grid">
+            <div class="prediction-form-card">
+                <h2>Enter Crop Details</h2>
+                <form id="predictionForm">
+                    <div class="form-group">
+                        <label for="crop_type">Crop Type</label>
+                        <select id="crop_type" name="crop_type" required>
+                            <option value="">Select Crop</option>
+                            <option value="wheat">Wheat</option>
+                            <option value="rice">Rice</option>
+                            <option value="corn">Corn</option>
+                            <option value="soybean">Soybean</option>
+                            <option value="cotton">Cotton</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="soil_type">Soil Type</label>
+                        <select id="soil_type" name="soil_type" required>
+                            <option value="">Select Soil Type</option>
+                            <option value="fertile">Fertile</option>
+                            <option value="sandy">Sandy</option>
+                            <option value="clay">Clay</option>
+                            <option value="loamy">Loamy</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="temperature">Temperature (°C)</label>
+                        <input type="number" id="temperature" name="temperature" min="0" max="50" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="rainfall">Rainfall (mm)</label>
+                        <input type="number" id="rainfall" name="rainfall" min="0" max="500" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="fertilizer">Fertilizer Type</label>
+                        <select id="fertilizer" name="fertilizer" required>
+                            <option value="">Select Fertilizer</option>
+                            <option value="organic">Organic</option>
+                            <option value="chemical">Chemical</option>
+                            <option value="none">None</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-magic"></i>
+                        Predict Yield
+                    </button>
+                </form>
+            </div>
+
+            <div class="prediction-result-card" id="resultCard" style="display: none;">
+                <h2>Prediction Results</h2>
+                <div class="result-content">
+                    <div class="yield-display">
+                        <span class="yield-value" id="yieldValue">0</span>
+                        <span class="yield-unit">tons/hectare</span>
+                    </div>
+                    <div class="confidence-display">
+                        <span>Confidence: </span>
+                        <span id="confidenceValue">0</span>%
+                    </div>
+                    <canvas id="yieldChart" width="400" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="loading-spinner" id="loadingSpinner" style="display: none;">
+    <div class="spinner"></div>
+    <p>Analyzing crop data...</p>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.getElementById('predictionForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const loadingSpinner = document.getElementById('loadingSpinner');
+    const resultCard = document.getElementById('resultCard');
+    
+    // Show loading spinner
+    loadingSpinner.style.display = 'flex';
+    resultCard.style.display = 'none';
+    
+    const formData = new FormData(this);
+    const data = Object.fromEntries(formData);
+    
+    try {
+        const response = await fetch('/predict', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        });
+        
+        const result = await response.json();
+        
+        // Hide loading spinner
+        setTimeout(() => {
+            loadingSpinner.style.display = 'none';
+            
+            // Update result display
+            document.getElementById('yieldValue').textContent = result.yield;
+            document.getElementById('confidenceValue').textContent = result.confidence;
+            
+            // Show result card
+            resultCard.style.display = 'block';
+            
+            // Create chart
+            createYieldChart(result.yield, result.crop);
+        }, 2000);
+        
+    } catch (error) {
+        console.error('Error:', error);
+        loadingSpinner.style.display = 'none';
+    }
+});
+
+function createYieldChart(yield, crop) {
+    const ctx = document.getElementById('yieldChart').getContext('2d');
+    
+    new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Predicted Yield', 'Potential Remaining'],
+            datasets: [{
+                data: [yield, Math.max(0, 10 - yield)],
+                backgroundColor: ['#4CAF50', '#E8F5E8'],
+                borderWidth: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'bottom'
+                },
+                title: {
+                    display: true,
+                    text: `${crop.charAt(0).toUpperCase() + crop.slice(1)} Yield Prediction`
+                }
+            }
+        }
+    });
+}
+</script>
+{% endblock %}
